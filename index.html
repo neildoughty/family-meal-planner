@@ -43,31 +43,15 @@
       cursor: pointer;
       transition: background 0.2s ease;
     }
-    .meal-admin button:hover {
-      background: #005fcc;
-    }
+    .meal-admin button:hover { background: #005fcc; }
 
     /* Layout: 2-column desktop (cards wider), single-column mobile */
-    .layout {
-      display: grid;
-      grid-template-columns: 3fr 2fr; /* cards:table = 3:2 */
-      gap: 20px;
-    }
-    @media (max-width: 768px) {
-      .layout { grid-template-columns: 1fr; }
-    }
+    .layout { display: grid; grid-template-columns: 3fr 2fr; gap: 20px; }
+    @media (max-width: 768px) { .layout { grid-template-columns: 1fr; } }
 
     /* Days grid */
-    .days {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-      gap: 12px;
-    }
-    @media (min-width: 769px) {
-      .days {
-        grid-template-columns: repeat(5, minmax(160px, 1fr)); /* Mon–Fri */
-      }
-    }
+    .days { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+    @media (min-width: 769px) { .days { grid-template-columns: repeat(5, minmax(160px, 1fr)); } }
     .day-card {
       background: #ffffff;
       border-radius: 12px;
@@ -94,8 +78,7 @@
       color: #555;
       min-height: 1.2em;
     }
-    .day-card select,
-    .day-card input[type="range"] {
+    .day-card select {
       width: 100%;
       margin-top: 6px;
       font-size: 0.95rem;
@@ -112,12 +95,12 @@
       border-radius: 12px;
       overflow: hidden;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-      table-layout: fixed; /* fixed columns for compactness */
+      table-layout: fixed;
     }
     .history-table th,
     .history-table td {
       border-bottom: 1px solid #e0e0e5;
-      padding: 8px 12px; /* narrower padding */
+      padding: 8px 12px;
       text-align: left;
       font-size: 0.9rem;
       color: #333;
@@ -127,132 +110,110 @@
       font-weight: 500;
       color: #666;
     }
-    .history-table tr:last-child td {
-      border-bottom: none;
-    }
-    @media (max-width: 768px) {
-      .history-table { margin-top: 20px; }
-    }
+    .history-table tr:last-child td { border-bottom: none; }
+    @media (max-width: 768px) { .history-table { margin-top: 20px; } }
   </style>
 </head>
 <body>
   <h1>Family Meal Planner</h1>
 
-  <!-- Add or update your meal list here -->
   <div class="meal-admin">
     <input type="text" id="new-meal-input" placeholder='Add new meal (e.g. "Spaghetti Bolognese")' />
     <button id="add-meal-button">Add Meal</button>
   </div>
 
   <div class="layout">
-    <!-- Left: 7-day meal cards -->
     <div class="days">
-      <!-- Template for each day -->
-      <div class="day-card">
-        <h2>Monday</h2>
-        <div class="selected-meal"></div>
-        <select></select>
-        <input type="range" min="0" max="100" value="50" />
-      </div>
-      <div class="day-card">
-        <h2>Tuesday</h2><div class="selected-meal"></div><select></select><input type="range" min="0" max="100" value="50" />
-      </div>
-      <div class="day-card">
-        <h2>Wednesday</h2><div class="selected-meal"></div><select></select><input type="range" min="0" max="100" value="50" />
-      </div>
-      <div class="day-card">
-        <h2>Thursday</h2><div class="selected-meal"></div><select></select><input type="range" min="0" max="100" value="50" />
-      </div>
-      <div class="day-card">
-        <h2>Friday</h2><div class="selected-meal"></div><select></select><input type="range" min="0" max="100" value="50" />
-      </div>
-      <div class="day-card">
-        <h2>Saturday</h2><div class="selected-meal"></div><select></select><input type="range" min="0" max="100" value="50" />
-      </div>
-      <div class="day-card">
-        <h2>Sunday</h2><div class="selected-meal"></div><select></select><input type="range" min="0" max="100" value="50" />
-      </div>
+      <!-- Days cards -->
+      <div class="day-card"><h2>Monday</h2><div class="selected-meal"></div><select></select></div>
+      <div class="day-card"><h2>Tuesday</h2><div class="selected-meal"></div><select></select></div>
+      <div class="day-card"><h2>Wednesday</h2><div class="selected-meal"></div><select></select></div>
+      <div class="day-card"><h2>Thursday</h2><div class="selected-meal"></div><select></select></div>
+      <div class="day-card"><h2>Friday</h2><div class="selected-meal"></div><select></select></div>
+      <div class="day-card"><h2>Saturday</h2><div class="selected-meal"></div><select></select></div>
+      <div class="day-card"><h2>Sunday</h2><div class="selected-meal"></div><select></select></div>
     </div>
 
-    <!-- Right: meal history table -->
+    <!-- Weekly selections table -->
     <table class="history-table">
       <thead>
-        <tr><th>Meal</th><th>Days since last eaten</th><th>Meals in past 6 weeks</th></tr>
+        <tr><th>Day</th><th>Meal</th></tr>
       </thead>
       <tbody>
-        <!-- History rows will be static or populated later -->
-        <tr><td>Spaghetti Bolognese</td><td>4</td><td>3</td></tr>
-        <tr><td>Fish &amp; Chips</td><td>7</td><td>2</td></tr>
+        <tr data-day="Monday"><td>Monday</td><td class="table-meal"></td></tr>
+        <tr data-day="Tuesday"><td>Tuesday</td><td class="table-meal"></td></tr>
+        <tr data-day="Wednesday"><td>Wednesday</td><td class="table-meal"></td></tr>
+        <tr data-day="Thursday"><td>Thursday</td><td class="table-meal"></td></tr>
+        <tr data-day="Friday"><td>Friday</td><td class="table-meal"></td></tr>
+        <tr data-day="Saturday"><td>Saturday</td><td class="table-meal"></td></tr>
+        <tr data-day="Sunday"><td>Sunday</td><td class="table-meal"></td></tr>
       </tbody>
     </table>
   </div>
 
   <script>
-    // Default meal list - replace with your family's favorites
     const defaultMeals = [
-      "Burgers",
-      "Carbonara",
-      "Chicken Shwarama",
-      "Chicken Tikka",
-      "Chilli",
-      "Fajitas",
-      "Fish and chips",
-      "Mackerel pasta",
-      "Meatball pasta",
-      "Pasta Amatriciana",
-      "Pizzas",
-      "Pork and potatoes",
-      "Sausage and chips",
-      "Thai Curry",
-      "Toad in the hole",
-      "Tuna and Sweetcorn pasta"
+      "Burgers","Carbonara","Chicken Shwarama","Chicken Tikka",
+      "Chilli","Fajitas","Fish and chips","Mackerel pasta",
+      "Meatball pasta","Pasta Amatriciana","Pizzas","Pork and potatoes",
+      "Sausage and chips","Thai Curry","Toad in the hole","Tuna and Sweetcorn pasta"
     ];
     let meals = JSON.parse(localStorage.getItem('meals')) || defaultMeals.slice();
+    let selections = JSON.parse(localStorage.getItem('selections')) || {};
     meals.sort();
 
     function saveMeals() {
       localStorage.setItem('meals', JSON.stringify(meals));
     }
+    function saveSelections() {
+      localStorage.setItem('selections', JSON.stringify(selections));
+    }
 
     function populateDropdowns() {
       document.querySelectorAll('.day-card').forEach(card => {
+        const day = card.querySelector('h2').textContent;
         const select = card.querySelector('select');
         select.innerHTML = '<option value="">— pick a meal —</option>';
         meals.forEach(meal => {
-          const opt = document.createElement('option');
-          opt.value = meal;
-          opt.textContent = meal;
+          const opt = document.createElement('option'); opt.value = meal; opt.textContent = meal;
           select.appendChild(opt);
         });
+        if (selections[day]) select.value = selections[day];
+        updateSelectedHeading(select);
+        updateTableCell(day, selections[day] || '');
       });
     }
 
     function updateSelectedHeading(select) {
       const card = select.closest('.day-card');
-      const heading = card.querySelector('.selected-meal');
-      heading.textContent = select.value || '';
+      card.querySelector('.selected-meal').textContent = select.value || '';
+    }
+
+    function updateTableCell(day, meal) {
+      const row = document.querySelector(`tr[data-day="${day}"] .table-meal`);
+      if (row) row.textContent = meal;
     }
 
     function init() {
-      populateDropdowns();
-
       // Add-meal handler
       document.getElementById('add-meal-button').addEventListener('click', () => {
         const input = document.getElementById('new-meal-input');
         const newMeal = input.value.trim();
         if (newMeal && !meals.includes(newMeal)) {
-          meals.push(newMeal);
-          meals.sort();
-          saveMeals();
-          populateDropdowns();
-          input.value = '';
+          meals.push(newMeal); meals.sort(); saveMeals(); populateDropdowns(); input.value = '';
         }
       });
 
-      // Dropdown change handlers
+      // Initialize dropdowns and handlers
+      populateDropdowns();
       document.querySelectorAll('.day-card select').forEach(select => {
-        select.addEventListener('change', () => updateSelectedHeading(select));
-        updateSelectedHeading(select);
+        select.addEventListener('change', () => {
+          const day = select.closest('.day-card').querySelector('h2').textContent;
+          selections[day] = select.value;
+          saveSelections();
+          updateSelectedHeading(select);
+          updateTableCell(day, select.value);
+        });
       });
     }
 
