@@ -45,7 +45,7 @@
     }
     .meal-admin button:hover { background: #005fcc; }
 
-    /* Layout: 2-column desktop (cards wider), single-column mobile */
+    /* Layout: 2-column desktop, single-column mobile */
     .layout { display: grid; grid-template-columns: 3fr 2fr; gap: 20px; }
     @media (max-width: 768px) { .layout { grid-template-columns: 1fr; } }
 
@@ -87,7 +87,7 @@
       border: 1px solid #ccc;
     }
 
-    /* Table styling */
+    /* History table styling */
     .history-table {
       width: 100%;
       border-collapse: collapse;
@@ -123,8 +123,8 @@
   </div>
 
   <div class="layout">
+    <!-- Meal selection cards -->
     <div class="days">
-      <!-- Days cards -->
       <div class="day-card"><h2>Monday</h2><div class="selected-meal"></div><select></select></div>
       <div class="day-card"><h2>Tuesday</h2><div class="selected-meal"></div><select></select></div>
       <div class="day-card"><h2>Wednesday</h2><div class="selected-meal"></div><select></select></div>
@@ -134,24 +134,19 @@
       <div class="day-card"><h2>Sunday</h2><div class="selected-meal"></div><select></select></div>
     </div>
 
-    <!-- Weekly selections table -->
+    <!-- Meal history table -->
     <table class="history-table">
       <thead>
-        <tr><th>Day</th><th>Meal</th></tr>
+        <tr><th>Meal</th><th>Days Since Last Eaten</th><th>Times Eaten (6w)</th></tr>
       </thead>
-      <tbody>
-        <tr data-day="Monday"><td>Monday</td><td class="table-meal"></td></tr>
-        <tr data-day="Tuesday"><td>Tuesday</td><td class="table-meal"></td></tr>
-        <tr data-day="Wednesday"><td>Wednesday</td><td class="table-meal"></td></tr>
-        <tr data-day="Thursday"><td>Thursday</td><td class="table-meal"></td></tr>
-        <tr data-day="Friday"><td>Friday</td><td class="table-meal"></td></tr>
-        <tr data-day="Saturday"><td>Saturday</td><td class="table-meal"></td></tr>
-        <tr data-day="Sunday"><td>Sunday</td><td class="table-meal"></td></tr>
+      <tbody id="history-body">
+        <!-- Filled by JS -->
       </tbody>
     </table>
   </div>
 
   <script>
+    // Initial meal list
     const defaultMeals = [
       "Burgers","Carbonara","Chicken Shwarama","Chicken Tikka",
       "Chilli","Fajitas","Fish and chips","Mackerel pasta",
@@ -160,15 +155,15 @@
     ];
     let meals = JSON.parse(localStorage.getItem('meals')) || defaultMeals.slice();
     let selections = JSON.parse(localStorage.getItem('selections')) || {};
+    let history = JSON.parse(localStorage.getItem('history')) || [];
     meals.sort();
 
-    function saveMeals() {
-      localStorage.setItem('meals', JSON.stringify(meals));
-    }
-    function saveSelections() {
-      localStorage.setItem('selections', JSON.stringify(selections));
-    }
+    // Save helpers
+    function saveMeals() { localStorage.setItem('meals', JSON.stringify(meals)); }
+    function saveSelections() { localStorage.setItem('selections', JSON.stringify(selections)); }
+    function saveHistory() { localStorage.setItem('history', JSON.stringify(history)); }
 
+    // Populate dropdowns and headings
     function populateDropdowns() {
       document.querySelectorAll('.day-card').forEach(card => {
         const day = card.querySelector('h2').textContent;
@@ -180,43 +175,78 @@
         });
         if (selections[day]) select.value = selections[day];
         updateSelectedHeading(select);
-        updateTableCell(day, selections[day] || '');
       });
     }
 
+    // Update small heading
     function updateSelectedHeading(select) {
       const card = select.closest('.day-card');
       card.querySelector('.selected-meal').textContent = select.value || '';
     }
 
-    function updateTableCell(day, meal) {
-      const row = document.querySelector(`tr[data-day="${day}"] .table-meal`);
-      if (row) row.textContent = meal;
+    // Record history event
+    function recordHistory(meal) {
+      if (!meal) return;
+      const today = new Date().toISOString().split('T')[0];
+      history.push({ meal, date: today });
+      saveHistory();
     }
 
+    // Compute days difference
+    function daysBetween(dateStr) {
+      const today = new Date();
+      const then = new Date(dateStr);
+      return Math.floor((today - then) / (1000*60*60*24));
+    }
+
+    // Render history table
+    function renderHistoryTable() {
+      const tbody = document.getElementById('history-body');
+      tbody.innerHTML = '';
+      const today = new Date();
+      meals.forEach(meal => {
+        // filter history
+        const entries = history.filter(e => e.meal === meal);
+        // days since last
+        const lastDate = entries.length ? entries[entries.length-1].date : null;
+        const daysSince = lastDate ? daysBetween(lastDate) : '-';
+        // count in past 42 days
+        const countRecent = entries.filter(e => {
+          return daysBetween(e.date) <= 42;
+        }).length;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${meal}</td><td>${daysSince}</td><td>${countRecent}</td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // Initialize
     function init() {
-      // Add-meal handler
+      // Add meal
       document.getElementById('add-meal-button').addEventListener('click', () => {
         const input = document.getElementById('new-meal-input');
         const newMeal = input.value.trim();
         if (newMeal && !meals.includes(newMeal)) {
-          meals.push(newMeal); meals.sort(); saveMeals(); populateDropdowns(); input.value = '';
+          meals.push(newMeal); meals.sort(); saveMeals(); renderHistoryTable();
+          populateDropdowns(); input.value = '';
         }
       });
-
-      // Initialize dropdowns and handlers
+      // Populate
       populateDropdowns();
+      renderHistoryTable();
+      // Selection changes
       document.querySelectorAll('.day-card select').forEach(select => {
         select.addEventListener('change', () => {
           const day = select.closest('.day-card').querySelector('h2').textContent;
-          selections[day] = select.value;
+          const meal = select.value;
+          selections[day] = meal;
           saveSelections();
           updateSelectedHeading(select);
-          updateTableCell(day, select.value);
+          recordHistory(meal);
+          renderHistoryTable();
         });
       });
     }
-
     document.addEventListener('DOMContentLoaded', init);
   </script>
 </body>
