@@ -50,7 +50,7 @@
     /* Layout: 2-column desktop (cards wider), single-column mobile */
     .layout {
       display: grid;
-      grid-template-columns: 3fr 1fr; /* more space for cards, less for table */
+      grid-template-columns: 3fr 2fr; /* cards:table = 3:2 */
       gap: 20px;
     }
     @media (max-width: 768px) {
@@ -62,6 +62,11 @@
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
       gap: 12px;
+    }
+    @media (min-width: 769px) {
+      .days {
+        grid-template-columns: repeat(5, minmax(160px, 1fr)); /* Mon–Fri */
+      }
     }
     .day-card {
       background: #ffffff;
@@ -107,12 +112,12 @@
       border-radius: 12px;
       overflow: hidden;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-      table-layout: fixed; /* ensure narrower columns */
+      table-layout: fixed; /* fixed columns for compactness */
     }
     .history-table th,
     .history-table td {
       border-bottom: 1px solid #e0e0e5;
-      padding: 8px 12px; /* reduced padding for narrower columns */
+      padding: 8px 12px; /* narrower padding */
       text-align: left;
       font-size: 0.9rem;
       color: #333;
