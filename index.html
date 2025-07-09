@@ -47,10 +47,10 @@
       background: #005fcc;
     }
 
-    /* Layout: 2-column desktop, single-column mobile */
+    /* Layout: 2-column desktop (cards wider), single-column mobile */
     .layout {
       display: grid;
-      grid-template-columns: 1fr 2fr;
+      grid-template-columns: 3fr 1fr; /* more space for cards, less for table */
       gap: 20px;
     }
     @media (max-width: 768px) {
@@ -107,13 +107,14 @@
       border-radius: 12px;
       overflow: hidden;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      table-layout: fixed; /* ensure narrower columns */
     }
     .history-table th,
     .history-table td {
       border-bottom: 1px solid #e0e0e5;
-      padding: 12px 16px;
+      padding: 8px 12px; /* reduced padding for narrower columns */
       text-align: left;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       color: #333;
     }
     .history-table th {
@@ -246,7 +247,6 @@
       // Dropdown change handlers
       document.querySelectorAll('.day-card select').forEach(select => {
         select.addEventListener('change', () => updateSelectedHeading(select));
-        // initialize headings
         updateSelectedHeading(select);
       });
     }
