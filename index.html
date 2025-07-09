@@ -62,12 +62,9 @@
     .days .day-card:nth-child(7) {
       background-color: #e8f4ff;
     }
-    /* Suggestion card */
+    /* Suggestions card */
     .days .suggestions-card {
       background-color: #fff7e6;
-      border-radius: 10px;
-      padding: 6px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     }
 
     .day-card, .suggestions-card {
@@ -88,7 +85,7 @@
       margin-bottom: 2px;
       color: #111;
     }
-    .selected-meal, .suggestions-card ul {
+    .selected-meal {
       font-size: 0.85rem;
       font-weight: 600;
       margin-bottom: 4px;
@@ -104,9 +101,17 @@
     .suggestions-card ul {
       list-style: none;
       padding-left: 0;
+      font-size: 0.85rem;
     }
     .suggestions-card li {
       margin-bottom: 4px;
+    }
+    .suggestions-card a {
+      color: #007aff;
+      text-decoration: none;
+    }
+    .suggestions-card a:hover {
+      text-decoration: underline;
     }
 
     /* History table styling */
@@ -180,8 +185,13 @@
       "Meatball pasta","Pasta Amatriciana","Pizzas","Pork and potatoes",
       "Sausage and chips","Thai Curry","Toad in the hole","Tuna and Sweetcorn pasta"
     ];
+    // New external recipe suggestions (light on visible vegetables)
     const suggestions = [
-      "Carbonara","Fish and chips","Burgers","Pork and potatoes","Sausage and chips"
+      { name: "Classic Mac and Cheese", url: "https://www.bbcgoodfood.com/recipes/classic-macaroni-cheese" },
+      { name: "Chicken Alfredo", url: "https://www.allrecipes.com/recipe/6965/chicken-alfredo/" },
+      { name: "Classic Beef Burgers", url: "https://www.bbcgoodfood.com/recipes/classic-beef-burgers" },
+      { name: "Ham and Cheese Quiche", url: "https://www.bbcgoodfood.com/recipes/ham-cheese-quiche" },
+      { name: "Pepperoni Pizza", url: "https://www.allrecipes.com/recipe/240208/homemade-pepperoni-pizza/" }
     ];
     const dayIndex = { Sunday: 0, Monday: 1, Tuesday: 2, Wednesday: 3, Thursday: 4, Friday: 5, Saturday: 6 };
     let meals = JSON.parse(localStorage.getItem('meals')) || defaultMeals.slice();
@@ -264,8 +274,13 @@
     // Render suggestions
     function renderSuggestions() {
       const ul = document.getElementById('suggestions-list');
-      suggestions.forEach(meal => {
-        const li = document.createElement('li'); li.textContent = meal;
+      suggestions.forEach(item => {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = item.url;
+        a.target = '_blank';
+        a.textContent = item.name;
+        li.appendChild(a);
         ul.appendChild(li);
       });
     }
