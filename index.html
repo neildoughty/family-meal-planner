@@ -27,19 +27,19 @@
       gap: 8px;
     }
     .meal-admin input {
-      padding: 10px;
+      padding: 8px;
       border: 1px solid #ccc;
       border-radius: 8px;
       flex: 1;
-      font-size: 1rem;
+      font-size: 0.95rem;
     }
     .meal-admin button {
-      padding: 10px 16px;
+      padding: 8px 14px;
       border: none;
       border-radius: 8px;
       background: #007aff;
       color: white;
-      font-size: 1rem;
+      font-size: 0.95rem;
       cursor: pointer;
       transition: background 0.2s ease;
     }
@@ -55,38 +55,38 @@
     .day-card {
       background: #ffffff;
       border-radius: 12px;
-      padding: 12px; /* reduced padding */
+      padding: 8px;
       display: flex;
       flex-direction: column;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
       transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
     .day-card:hover {
-      transform: translateY(-4px) scale(1.02);
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+      transform: translateY(-2px) scale(1.01);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
     }
-    /* Weekend styling */
+    /* Weekend styling - stronger highlight */
     .days .day-card:nth-child(6),
     .days .day-card:nth-child(7) {
-      background-color: #f9f9ff;
+      background-color: #e8f4ff;
     }
     .day-card h2 {
-      font-size: 1.1rem;
+      font-size: 1rem;
       font-weight: 500;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
       color: #111;
     }
     .selected-meal {
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       font-weight: 600;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
       color: #555;
-      min-height: 1.2em;
+      min-height: 1em;
     }
     .day-card select {
       width: 100%;
-      font-size: 0.95rem;
-      padding: 6px;
+      font-size: 0.9rem;
+      padding: 4px;
       border-radius: 6px;
       border: 1px solid #ccc;
     }
