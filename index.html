@@ -18,49 +18,141 @@
       font-weight: 400;
       color: #333;
     }
-    /* Admin: add meals */
-    .meal-admin { display: flex; justify-content: center; margin-bottom: 20px; gap: 8px; }
-    .meal-admin input { padding: 6px; border: 1px solid #ccc; border-radius: 6px; flex: 1; font-size: 0.9rem; }
-    .meal-admin button { padding: 6px 12px; border: none; border-radius: 6px; background: #007aff; color: white; font-size: 0.9rem; cursor: pointer; transition: background 0.2s ease; }
+
+    /* Add meal controls */
+    .meal-admin {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+      gap: 8px;
+    }
+    .meal-admin input {
+      padding: 6px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      flex: 1;
+      font-size: 0.9rem;
+    }
+    .meal-admin button {
+      padding: 6px 12px;
+      border: none;
+      border-radius: 6px;
+      background: #007aff;
+      color: white;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
     .meal-admin button:hover { background: #005fcc; }
-    /* Layout: 2-column desktop, single-column mobile */
-    .layout { display: grid; grid-template-columns: 3fr 2fr; gap: 20px; }
-    @media (max-width: 768px) { .layout { grid-template-columns: 1fr; } }
-    /* Days grid */
-    .days { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px; }
-    @media (min-width: 769px) { .days { grid-template-columns: repeat(5, minmax(120px, 1fr)); } }
-    /* Weekday cards */
+
+    /* Layout */
+    .layout {
+      display: grid;
+      grid-template-columns: 3fr 2fr;
+      gap: 20px;
+    }
+    @media (max-width: 768px) {
+      .layout { grid-template-columns: 1fr; }
+    }
+
+    /* Day cards grid */
+    .days {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 8px;
+    }
+    @media (min-width: 769px) {
+      .days { grid-template-columns: repeat(5, minmax(120px, 1fr)); }
+    }
+
+    /* Weekday / weekend colors */
     .days .day-card:nth-child(-n+5) { background-color: #f7f7f7; }
-    /* Weekend cards */
     .days .day-card:nth-child(6), .days .day-card:nth-child(7) { background-color: #e8f4ff; }
-    /* Suggestions card */
     .days .suggestions-card { background-color: #fff7e6; }
-    .day-card, .suggestions-card { border-radius: 10px; padding: 6px; display: flex; flex-direction: column; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); transition: transform 0.2s ease, box-shadow 0.2s ease; }
-    .day-card:hover, .suggestions-card:hover { transform: translateY(-1px) scale(1.005); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12); }
-    .day-card h2, .suggestions-card h2 { font-size: 0.95rem; font-weight: 500; margin-bottom: 2px; color: #111; }
-    .selected-meal { font-size: 0.85rem; font-weight: 600; margin-bottom: 4px; color: #555; }
-    .nutrition-summary { font-size: 0.8rem; color: #333; margin-bottom: 4px; }
-    .day-card select { width: 100%; font-size: 0.85rem; padding: 2px 4px; border-radius: 4px; border: 1px solid #ccc; }
-    .suggestions-card ul { list-style: none; padding-left: 0; font-size: 0.85rem; }
+
+    .day-card, .suggestions-card {
+      border-radius: 10px;
+      padding: 6px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .day-card:hover, .suggestions-card:hover {
+      transform: translateY(-1px) scale(1.005);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    }
+    .day-card h2, .suggestions-card h2 {
+      font-size: 0.95rem;
+      font-weight: 500;
+      margin-bottom: 2px;
+      color: #111;
+    }
+    .selected-meal {
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: #555;
+    }
+    .nutrition-summary {
+      font-size: 0.8rem;
+      color: #333;
+      margin-bottom: 4px;
+    }
+    .day-card select {
+      width: 100%;
+      font-size: 0.85rem;
+      padding: 2px 4px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+    .suggestions-card ul {
+      list-style: none;
+      padding-left: 0;
+      font-size: 0.85rem;
+    }
     .suggestions-card li { margin-bottom: 4px; }
-    .suggestions-card a { color: #007aff; text-decoration: none; }
+    .suggestions-card a {
+      color: #007aff;
+      text-decoration: none;
+    }
     .suggestions-card a:hover { text-decoration: underline; }
-    /* History table styling */
-    .history-table { width: 100%; border-collapse: collapse; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); table-layout: fixed; }
-    .history-table th, .history-table td { border-bottom: 1px solid #e0e0e5; padding: 8px 12px; text-align: left; font-size: 0.9rem; color: #333; }
-    .history-table th { background: #fafafa; font-weight: 500; color: #666; }
+
+    /* History table */
+    .history-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #ffffff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      table-layout: fixed;
+    }
+    .history-table th, .history-table td {
+      border-bottom: 1px solid #e0e0e5;
+      padding: 8px 12px;
+      text-align: left;
+      font-size: 0.9rem;
+      color: #333;
+    }
+    .history-table th {
+      background: #fafafa;
+      font-weight: 500;
+      color: #666;
+    }
     .history-table tr:last-child td { border-bottom: none; }
-    @media (max-width: 768px) { .history-table { margin-top: 20px; } }
+    @media (max-width: 768px) {
+      .history-table { margin-top: 20px; }
+    }
   </style>
 </head>
 <body>
   <h1>Family Meal Planner</h1>
   <div class="meal-admin">
-    <input type="text" id="new-meal-input" placeholder='Add new meal (e.g. "Spaghetti Bolognese")' />
+    <input type="text" id="new-meal-input" placeholder="Add new meal (e.g. 'Spaghetti Bolognese')" />
     <button id="add-meal-button">Add Meal</button>
   </div>
   <div class="layout">
-    <!-- Meal selection cards -->
     <div class="days">
       <div class="day-card"><h2>Monday</h2><div class="selected-meal"></div><div class="nutrition-summary"></div><select></select></div>
       <div class="day-card"><h2>Tuesday</h2><div class="selected-meal"></div><div class="nutrition-summary"></div><select></select></div>
@@ -69,85 +161,189 @@
       <div class="day-card"><h2>Friday</h2><div class="selected-meal"></div><div class="nutrition-summary"></div><select></select></div>
       <div class="day-card"><h2>Saturday</h2><div class="selected-meal"></div><div class="nutrition-summary"></div><select></select></div>
       <div class="day-card"><h2>Sunday</h2><div class="selected-meal"></div><div class="nutrition-summary"></div><select></select></div>
-      <!-- Suggestions Card -->
       <div class="suggestions-card">
         <h2>Suggestions</h2>
         <ul id="suggestions-list"></ul>
       </div>
     </div>
-    <!-- Meal history table -->
     <table class="history-table">
-      <thead><tr><th>Meal</th><th>Days Since Last Eaten</th><th>Times Eaten (6w)</th></tr></thead>
+      <thead>
+        <tr><th>Meal</th><th>Days Since Last Eaten</th><th>Times Eaten (6w)</th></tr>
+      </thead>
       <tbody id="history-body"></tbody>
     </table>
   </div>
   <script>
+    const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwq1z4rfhm9-dZQ_NX5FEoOphQ-GxomXkVQrQmj7bmLcFXRf_7AOLfRKLRM4sCIDU8Q/exec';
     const defaultMeals = [
-      "Burgers","Carbonara","Chicken Shwarama","Chicken Tikka",
-      "Chilli","Fajitas","Fish and chips","Mackerel pasta",
-      "Meatball pasta","Pasta Amatriciana","Pizzas","Pork and potatoes",
-      "Sausage and chips","Thai Curry","Toad in the hole","Tuna and Sweetcorn pasta"
+      'Burgers','Carbonara','Chicken Shwarama','Chicken Tikka',
+      'Chilli','Fajitas','Fish and chips','Mackerel pasta',
+      'Meatball pasta','Pasta Amatriciana','Pizzas','Pork and potatoes',
+      'Sausage and chips','Thai Curry','Toad in the hole','Tuna and Sweetcorn pasta'
     ];
     const suggestions = [
-      { name: "Easy Macaroni Cheese", url: "https://www.bbcgoodfood.com/recipes/macaroni-cheese-4-easy-steps" },
-      { name: "Creamy Chicken Alfredo", url: "https://www.allrecipes.com/recipe/276725/creamy-chicken-alfredo/" },
-      { name: "Homemade Beef Burgers", url: "https://www.bbcgoodfood.com/recipes/homemade-beef-burgers" },
-      { name: "Easy Ham and Cheese Quiche", url: "https://www.allrecipes.com/recipe/241251/creamy-ham-and-cheese-quiche/" },
-      { name: "Homemade Pepperoni Pizza", url: "https://www.allrecipes.com/recipe/240376/homemade-pepperoni-pizza/" }
+      { name: 'Easy Macaroni Cheese', url: 'https://www.bbcgoodfood.com/recipes/macaroni-cheese-4-easy-steps' },
+      { name: 'Creamy Chicken Alfredo', url: 'https://www.allrecipes.com/recipe/276725/creamy-chicken-alfredo/' },
+      { name: 'Homemade Beef Burgers', url: 'https://www.bbcgoodfood.com/recipes/homemade-beef-burgers' },
+      { name: 'Easy Ham and Cheese Quiche', url: 'https://www.allrecipes.com/recipe/241251/creamy-ham-and-cheese-quiche/' },
+      { name: 'Homemade Pepperoni Pizza', url: 'https://www.allrecipes.com/recipe/240376/homemade-pepperoni-pizza/' }
     ];
     const nutritionData = {
-      "Burgers": { cal: 550, protein: 30 },
-      "Carbonara": { cal: 620, protein: 25 },
-      "Chicken Shwarama": { cal: 480, protein: 28 },
-      "Chicken Tikka": { cal: 450, protein: 27 },
-      "Chilli": { cal: 530, protein: 22 },
-      "Fajitas": { cal: 500, protein: 26 },
-      "Fish and chips": { cal: 700, protein: 20 },
-      "Mackerel pasta": { cal: 580, protein: 24 },
-      "Meatball pasta": { cal: 610, protein: 26 },
-      "Pasta Amatriciana": { cal: 600, protein: 20 },
-      "Pizzas": { cal: 680, protein: 25 },
-      "Pork and potatoes": { cal: 650, protein: 28 },
-      "Sausage and chips": { cal: 720, protein: 25 },
-      "Thai Curry": { cal: 590, protein: 22 },
-      "Toad in the hole": { cal: 630, protein: 24 },
-      "Tuna and Sweetcorn pasta": { cal: 540, protein: 23 }
+      'Burgers': { cal: 550, protein: 30 },
+      'Carbonara': { cal: 620, protein: 25 },
+      'Chicken Shwarama': { cal: 480, protein: 28 },
+      'Chicken Tikka': { cal: 450, protein: 27 },
+      'Chilli': { cal: 530, protein: 22 },
+      'Fajitas': { cal: 500, protein: 26 },
+      'Fish and chips': { cal: 700, protein: 20 },
+      'Mackerel pasta': { cal: 580, protein: 24 },
+      'Meatball pasta': { cal: 610, protein: 26 },
+      'Pasta Amatriciana': { cal: 600, protein: 20 },
+      'Pizzas': { cal: 680, protein: 25 },
+      'Pork and potatoes': { cal: 650, protein: 28 },
+      'Sausage and chips': { cal: 720, protein: 25 },
+      'Thai Curry': { cal: 590, protein: 22 },
+      'Toad in the hole': { cal: 630, protein: 24 },
+      'Tuna and Sweetcorn pasta': { cal: 540, protein: 23 }
     };
     const dayIndex = { Sunday: 0, Monday: 1, Tuesday: 2, Wednesday: 3, Thursday: 4, Friday: 5, Saturday: 6 };
-    let meals = JSON.parse(localStorage.getItem('meals')) || defaultMeals.slice();
-    let selections = JSON.parse(localStorage.getItem('selections')) || {};
-    let history = JSON.parse(localStorage.getItem('history')) || [];
-    meals.sort();
-    function saveMeals() { localStorage.setItem('meals', JSON.stringify(meals)); }
-    function saveSelections() { localStorage.setItem('selections', JSON.stringify(selections)); }
-    function saveHistory() { localStorage.setItem('history', JSON.stringify(history)); }
+    let meals, selections, history;
+
+    async function fetchHistory() {
+      try {
+        const res = await fetch(SHEETS_URL);
+        if (!res.ok) throw new Error('Sheet GET failed');
+        history = await res.json();
+      } catch (e) {
+        console.warn('Fallback local', e);
+        history = JSON.parse(localStorage.getItem('history')) || [];
+      }
+    }
+
+    async function postHistory(meal, date) {
+      recordLocalHistory(meal, date);
+      try {
+        await fetch(SHEETS_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ meal, date })
+        });
+      } catch (e) {
+        console.warn('Sheet POST failed', e);
+      }
+    }
+
+    function recordLocalHistory(meal, date) {
+      if (!meal) return;
+      if (!history.find(e => e.meal===meal && e.date===date)) {
+        history.push({ meal, date });
+        localStorage.setItem('history', JSON.stringify(history));
+      }
+    }
+
     function populateDropdowns() {
       document.querySelectorAll('.day-card').forEach(card => {
         const day = card.querySelector('h2').textContent;
         const select = card.querySelector('select');
         select.innerHTML = '<option value="">— pick a meal —</option>';
-        meals.forEach(meal => { const opt = document.createElement('option'); opt.value = meal; opt.textContent = meal; select.appendChild(opt); });
+        meals.forEach(meal => {
+          const opt = document.createElement('option');
+          opt.value = meal;
+          opt.textContent = meal;
+          select.appendChild(opt);
+        });
         if (selections[day]) select.value = selections[day];
         updateCard(card, select);
       });
     }
+
     function updateCard(card, select) {
       card.querySelector('.selected-meal').textContent = select.value || '';
       const nutr = card.querySelector('.nutrition-summary');
-      if (select.value && nutritionData[select.value]) {
-        const d = nutritionData[select.value];
-        nutr.textContent = `${d.cal} kcal • ${d.protein}g protein`;
-      } else {
-        nutr.textContent = '';
+      const data = nutritionData[select.value];
+      nutr.textContent = data ? `${data.cal} kcal • ${data.protein}g protein` : '';
+    }
+
+    function seedHistoryFromSelections() {
+      const today = new Date();
+      Object.entries(selections).forEach(([day, meal]) => {
+        if (!meal) return;
+        const idx = dayIndex[day];
+        const dateObj = new Date(today);
+        dateObj.setDate(today.getDate() + (idx - today.getDay()));
+        postHistory(meal, dateObj.toISOString().split('T')[0]);
+      });
+    }
+
+    function daysBetween(dateStr) {
+      const today = new Date();
+      const then = new Date(dateStr);
+      return Math.floor((today - then) / (1000*60*60*24));
+    }
+
+    function renderHistoryTable() {
+      const tbody = document.getElementById('history-body');
+      tbody.innerHTML = '';
+      meals.forEach(meal => {
+        const entries = history.filter(e => e.meal===meal);
+        const lastDate = entries.length ? entries[entries.length-1].date : null;
+        const daysSince = lastDate ? daysBetween(lastDate) : '-';
+        const countRecent = entries.filter(e => daysBetween(e.date)<=42).length;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${meal}</td><td>${daysSince}</td><td>${countRecent}</td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderSuggestions() {
+      const ul = document.getElementById('suggestions-list');
+      suggestions.forEach(item => {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = item.url;
+        a.target = '_blank';
+        a.textContent = item.name;
+        li.appendChild(a);
+        ul.appendChild(li);
+      });
+    }
+
+    function addNewMeal() {
+      const input = document.getElementById('new-meal-input');
+      const meal = input.value.trim();
+      if (meal && !meals.includes(meal)) {
+        meals.push(meal);
+        meals.sort();
+        localStorage.setItem('meals', JSON.stringify(meals));
+        renderHistoryTable();
+        populateDropdowns();
+        input.value = '';
       }
     }
-    function recordHistory(meal, dateStr = null) { if (!meal) return; const date = dateStr || new Date().toISOString().split('T')[0]; if (!history.some(e => e.meal===meal&&e.date===date)){ history.push({meal,date}); saveHistory(); }}
-    function seedHistoryFromSelections(){ const today=new Date(); Object.entries(selections).forEach(([day,meal])=>{ if(!meal)return; const targetIdx=dayIndex[day]; const diff=targetIdx-today.getDay(); const dateObj=new Date(today); dateObj.setDate(today.getDate()+diff); recordHistory(meal,dateObj.toISOString().split('T')[0]); }); }
-    function daysBetween(dateStr){ const today=new Date(); const then=new Date(dateStr); return Math.floor((today-then)/(1000*60*60*24)); }
-    function renderHistoryTable(){ const tbody=document.getElementById('history-body'); tbody.innerHTML=''; meals.forEach(meal=>{ const entries=history.filter(e=>e.meal===meal); const lastDate=entries.length?entries[entries.length-1].date:null; const daysSince=lastDate?daysBetween(lastDate):'-'; const countRecent=entries.filter(e=>daysBetween(e.date)<=42).length; const tr=document.createElement('tr'); tr.innerHTML=`<td>${meal}</td><td>${daysSince}</td><td>${countRecent}</td>`; tbody.appendChild(tr); }); }
-    function renderSuggestions(){ const ul=document.getElementById('suggestions-list'); suggestions.forEach(item=>{ const li=document.createElement('li'); const a=document.createElement('a'); a.href=item.url; a.target='_blank'; a.textContent=item.name; li.appendChild(a); ul.appendChild(li); }); }
-    function init(){ document.getElementById('add-meal-button').addEventListener('click',()=>{ const input=document.getElementById('new-meal-input'); const newMeal=input.value.trim(); if(newMeal &&!meals.includes(newMeal)){ meals.push(newMeal); meals.sort(); saveMeals(); renderHistoryTable(); populateDropdowns(); input.value=''; } }); populateDropdowns(); seedHistoryFromSelections(); renderHistoryTable(); renderSuggestions(); document.querySelectorAll('.day-card select').forEach(select=>{ select.addEventListener('change',()=>{ const card=select.closest('.day-card'); const day=card.querySelector('h2').textContent; const meal=select.value; selections[day]=meal; saveSelections(); updateCard(card,select); recordHistory(meal); renderHistoryTable(); }); }); }
-    document.addEventListener('DOMContentLoaded',init);
+
+    async function init() {
+      document.getElementById('add-meal-button').addEventListener('click', addNewMeal);
+      meals = JSON.parse(localStorage.getItem('meals')) || defaultMeals.slice(); meals.sort();
+      selections = JSON.parse(localStorage.getItem('selections')) || {};
+      await fetchHistory();
+      seedHistoryFromSelections();
+      renderHistoryTable(); renderSuggestions(); populateDropdowns();
+      document.querySelectorAll('.day-card select').forEach(select => {
+        select.addEventListener('change', async () => {
+          const card = select.closest('.day-card');
+          const day = card.querySelector('h2').textContent;
+          const meal = select.value;
+          const date = new Date().toISOString().split('T')[0];
+          selections[day] = meal;
+          localStorage.setItem('selections', JSON.stringify(selections));
+          updateCard(card, select);
+          await postHistory(meal, date);
+          renderHistoryTable();
+        });
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
   </script>
 </body>
 </html>
