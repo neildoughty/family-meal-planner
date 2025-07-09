@@ -57,14 +57,20 @@
     .days .day-card:nth-child(-n+5) {
       background-color: #f7f7f7;
     }
-
     /* Weekend cards */
     .days .day-card:nth-child(6),
     .days .day-card:nth-child(7) {
       background-color: #e8f4ff;
     }
+    /* Suggestion card */
+    .days .suggestions-card {
+      background-color: #fff7e6;
+      border-radius: 10px;
+      padding: 6px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
 
-    .day-card {
+    .day-card, .suggestions-card {
       border-radius: 10px;
       padding: 6px;
       display: flex;
@@ -72,22 +78,21 @@
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
       transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
-    .day-card:hover {
+    .day-card:hover, .suggestions-card:hover {
       transform: translateY(-1px) scale(1.005);
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
     }
-    .day-card h2 {
+    .day-card h2, .suggestions-card h2 {
       font-size: 0.95rem;
       font-weight: 500;
       margin-bottom: 2px;
       color: #111;
     }
-    .selected-meal {
+    .selected-meal, .suggestions-card ul {
       font-size: 0.85rem;
       font-weight: 600;
-      margin-bottom: 2px;
+      margin-bottom: 4px;
       color: #555;
-      min-height: 1em;
     }
     .day-card select {
       width: 100%;
@@ -95,6 +100,13 @@
       padding: 2px 4px;
       border-radius: 4px;
       border: 1px solid #ccc;
+    }
+    .suggestions-card ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    .suggestions-card li {
+      margin-bottom: 4px;
     }
 
     /* History table styling */
@@ -142,6 +154,11 @@
       <div class="day-card"><h2>Friday</h2><div class="selected-meal"></div><select></select></div>
       <div class="day-card"><h2>Saturday</h2><div class="selected-meal"></div><select></select></div>
       <div class="day-card"><h2>Sunday</h2><div class="selected-meal"></div><select></select></div>
+      <!-- Suggestions Card -->
+      <div class="suggestions-card">
+        <h2>Suggestions</h2>
+        <ul id="suggestions-list"></ul>
+      </div>
     </div>
 
     <!-- Meal history table -->
@@ -162,6 +179,9 @@
       "Chilli","Fajitas","Fish and chips","Mackerel pasta",
       "Meatball pasta","Pasta Amatriciana","Pizzas","Pork and potatoes",
       "Sausage and chips","Thai Curry","Toad in the hole","Tuna and Sweetcorn pasta"
+    ];
+    const suggestions = [
+      "Carbonara","Fish and chips","Burgers","Pork and potatoes","Sausage and chips"
     ];
     const dayIndex = { Sunday: 0, Monday: 1, Tuesday: 2, Wednesday: 3, Thursday: 4, Friday: 5, Saturday: 6 };
     let meals = JSON.parse(localStorage.getItem('meals')) || defaultMeals.slice();
@@ -241,6 +261,15 @@
       });
     }
 
+    // Render suggestions
+    function renderSuggestions() {
+      const ul = document.getElementById('suggestions-list');
+      suggestions.forEach(meal => {
+        const li = document.createElement('li'); li.textContent = meal;
+        ul.appendChild(li);
+      });
+    }
+
     // Initialize
     function init() {
       // Add meal handler
@@ -257,10 +286,11 @@
         }
       });
 
-      // Populate selections & seed history
+      // Populate and render
       populateDropdowns();
       seedHistoryFromSelections();
       renderHistoryTable();
+      renderSuggestions();
 
       // Selection changes
       document.querySelectorAll('.day-card select').forEach(select => {
