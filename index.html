@@ -40,7 +40,7 @@
 
   <!-- Add or update your meal list here -->
   <div class="meal-admin">
-    <input type="text" id="new-meal-input" placeholder="Add new meal (e.g. "Spaghetti Bolognese")" />
+    <input type="text" id="new-meal-input" placeholder='Add new meal (e.g. "Spaghetti Bolognese")' />
     <button id="add-meal-button">Add Meal</button>
   </div>
 
@@ -90,7 +90,22 @@
   <script>
     // Default meal list - replace with your family's favorites
     const defaultMeals = [
-      /* e.g. "Amatriciana", "Burgers", "Chilli", etc. */
+      "Burgers",
+      "Carbonara",
+      "Chicken Shwarama",
+      "Chicken Tikka",
+      "Chilli",
+      "Fajitas",
+      "Fish and chips",
+      "Mackerel pasta",
+      "Meatball pasta",
+      "Pasta Amatriciana",
+      "Pizzas",
+      "Pork and potatoes",
+      "Sausage and chips",
+      "Thai Curry",
+      "Toad in the hole",
+      "Tuna and Sweetcorn pasta"
     ];
     let meals = JSON.parse(localStorage.getItem('meals')) || defaultMeals.slice();
     meals.sort();
