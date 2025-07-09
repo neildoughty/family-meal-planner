@@ -153,6 +153,7 @@
       "Meatball pasta","Pasta Amatriciana","Pizzas","Pork and potatoes",
       "Sausage and chips","Thai Curry","Toad in the hole","Tuna and Sweetcorn pasta"
     ];
+    const dayIndex = { Sunday: 0, Monday: 1, Tuesday: 2, Wednesday: 3, Thursday: 4, Friday: 5, Saturday: 6 };
     let meals = JSON.parse(localStorage.getItem('meals')) || defaultMeals.slice();
     let selections = JSON.parse(localStorage.getItem('selections')) || {};
     let history = JSON.parse(localStorage.getItem('history')) || [];
@@ -184,12 +185,28 @@
       card.querySelector('.selected-meal').textContent = select.value || '';
     }
 
-    // Record history event
-    function recordHistory(meal) {
+    // Record history event, avoid duplicates for same date & meal
+    function recordHistory(meal, dateStr = null) {
       if (!meal) return;
-      const today = new Date().toISOString().split('T')[0];
-      history.push({ meal, date: today });
-      saveHistory();
+      const date = dateStr || new Date().toISOString().split('T')[0];
+      if (!history.some(e => e.meal === meal && e.date === date)) {
+        history.push({ meal, date });
+        saveHistory();
+      }
+    }
+
+    // Seed history from this week's selections
+    function seedHistoryFromSelections() {
+      const today = new Date();
+      Object.entries(selections).forEach(([day, meal]) => {
+        if (!meal) return;
+        const targetIdx = dayIndex[day];
+        const diff = targetIdx - today.getDay();
+        const dateObj = new Date(today);
+        dateObj.setDate(today.getDate() + diff);
+        const dateStr = dateObj.toISOString().split('T')[0];
+        recordHistory(meal, dateStr);
+      });
     }
 
     // Compute days difference
@@ -203,17 +220,11 @@
     function renderHistoryTable() {
       const tbody = document.getElementById('history-body');
       tbody.innerHTML = '';
-      const today = new Date();
       meals.forEach(meal => {
-        // filter history
         const entries = history.filter(e => e.meal === meal);
-        // days since last
         const lastDate = entries.length ? entries[entries.length-1].date : null;
         const daysSince = lastDate ? daysBetween(lastDate) : '-';
-        // count in past 42 days
-        const countRecent = entries.filter(e => {
-          return daysBetween(e.date) <= 42;
-        }).length;
+        const countRecent = entries.filter(e => daysBetween(e.date) <= 42).length;
         const tr = document.createElement('tr');
         tr.innerHTML = `<td>${meal}</td><td>${daysSince}</td><td>${countRecent}</td>`;
         tbody.appendChild(tr);
@@ -222,18 +233,25 @@
 
     // Initialize
     function init() {
-      // Add meal
+      // Add meal handler
       document.getElementById('add-meal-button').addEventListener('click', () => {
         const input = document.getElementById('new-meal-input');
         const newMeal = input.value.trim();
         if (newMeal && !meals.includes(newMeal)) {
-          meals.push(newMeal); meals.sort(); saveMeals(); renderHistoryTable();
-          populateDropdowns(); input.value = '';
+          meals.push(newMeal);
+          meals.sort();
+          saveMeals();
+          renderHistoryTable();
+          populateDropdowns();
+          input.value = '';
         }
       });
-      // Populate
+
+      // Populate selections & seed history
       populateDropdowns();
+      seedHistoryFromSelections();
       renderHistoryTable();
+
       // Selection changes
       document.querySelectorAll('.day-card select').forEach(select => {
         select.addEventListener('change', () => {
