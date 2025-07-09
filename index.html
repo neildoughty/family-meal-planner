@@ -50,12 +50,12 @@
     @media (max-width: 768px) { .layout { grid-template-columns: 1fr; } }
 
     /* Days grid */
-    .days { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
-    @media (min-width: 769px) { .days { grid-template-columns: repeat(5, minmax(160px, 1fr)); } }
+    .days { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+    @media (min-width: 769px) { .days { grid-template-columns: repeat(5, minmax(140px, 1fr)); } }
     .day-card {
       background: #ffffff;
       border-radius: 12px;
-      padding: 16px;
+      padding: 12px; /* reduced padding */
       display: flex;
       flex-direction: column;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
@@ -65,22 +65,26 @@
       transform: translateY(-4px) scale(1.02);
       box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
     }
+    /* Weekend styling */
+    .days .day-card:nth-child(6),
+    .days .day-card:nth-child(7) {
+      background-color: #f9f9ff;
+    }
     .day-card h2 {
       font-size: 1.1rem;
       font-weight: 500;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       color: #111;
     }
     .selected-meal {
       font-size: 0.95rem;
       font-weight: 600;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       color: #555;
       min-height: 1.2em;
     }
     .day-card select {
       width: 100%;
-      margin-top: 6px;
       font-size: 0.95rem;
       padding: 6px;
       border-radius: 6px;
