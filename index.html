@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Family Meal Planner</title>
+  <style>
+    /* Base resets */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      background: #fafafa;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    /* Layout: 2-column on desktop, single column on mobile */
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 20px;
+    }
+    @media (max-width: 768px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Days grid */
+    .days {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 10px;
+    }
+    .day-card {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .day-card h2 {
+      font-size: 1em;
+      margin-bottom: 8px;
+    }
+    .day-card select,
+    .day-card input[type="range"] {
+      width: 100%;
+      margin-top: 8px;
+    }
+
+    /* Table styling */
+    .history-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .history-table th,
+    .history-table td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+    .history-table th {
+      background: #f5f5f5;
+      font-weight: normal;
+    }
+    @media (max-width: 768px) {
+      .history-table {
+        margin-top: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Family Meal Planner</h1>
+  <div class="layout">
+    <!-- Left: 7-day meal cards -->
+    <div class="days">
+      <!-- Repeat this block for each day -->
+      <div class="day-card">
+        <h2>Monday</h2>
+        <select>
+          <option value="">— pick a meal —</option>
+          <option>Spaghetti Bolognese</option>
+          <option>Chicken Curry</option>
+          <option>Veggie Stir-fry</option>
+        </select>
+        <input type="range" min="0" max="100" value="50" />
+      </div>
+      <div class="day-card">
+        <h2>Tuesday</h2>
+        <select>
+          <option value="">— pick a meal —</option>
+        </select>
+        <input type="range" min="0" max="100" value="50" />
+      </div>
+      <div class="day-card">
+        <h2>Wednesday</h2>
+        <select>
+          <option value="">— pick a meal —</option>
+        </select>
+        <input type="range" min="0" max="100" value="50" />
+      </div>
+      <div class="day-card">
+        <h2>Thursday</h2>
+        <select>
+          <option value="">— pick a meal —</option>
+        </select>
+        <input type="range" min="0" max="100" value="50" />
+      </div>
+      <div class="day-card">
+        <h2>Friday</h2>
+        <select>
+          <option value="">— pick a meal —</option>
+        </select>
+        <input type="range" min="0" max="100" value="50" />
+      </div>
+      <div class="day-card">
+        <h2>Saturday</h2>
+        <select>
+          <option value="">— pick a meal —</option>
+        </select>
+        <input type="range" min="0" max="100" value="50" />
+      </div>
+      <div class="day-card">
+        <h2>Sunday</h2>
+        <select>
+          <option value="">— pick a meal —</option>
+        </select>
+        <input type="range" min="0" max="100" value="50" />
+      </div>
+    </div>
+
+    <!-- Right: meal history table -->
+    <table class="history-table">
+      <thead>
+        <tr>
+          <th>Meal</th>
+          <th>Days since last eaten</th>
+          <th>Meals in past 6 weeks</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Spaghetti Bolognese</td>
+          <td>4</td>
+          <td>3</td>
+        </tr>
+        <tr>
+          <td>Fish &amp; Chips</td>
+          <td>7</td>
+          <td>2</td>
+        </tr>
+        <!-- Add more rows here -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Placeholder for future interactivity -->
+  <script>
+    // TODO: hook up dropdowns/sliders to storage or serverless functions
+  </script>
+</body>
+</html>
