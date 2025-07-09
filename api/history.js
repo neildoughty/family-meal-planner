@@ -9,20 +9,31 @@ const redis = new Redis({
 const KEY = 'meal-history';
 
 export default async function handler(req, res) {
-  if (req.method === 'GET') {
-    const data = await redis.get(KEY);
-    return res.status(200).json(data ? JSON.parse(data) : []);
-  }
-  if (req.method === 'POST') {
-    const { meal, date } = req.body;
-    const data = await redis.get(KEY);
-    const history = data ? JSON.parse(data) : [];
-    if (!history.find(e => e.meal === meal && e.date === date)) {
-      history.push({ meal, date });
-      await redis.set(KEY, JSON.stringify(history));
+  try {
+    if (req.method === 'GET') {
+      const data = await redis.get(KEY);
+      const history = data ? JSON.parse(data) : [];
+      return res.status(200).json(history);
     }
-    return res.status(200).json({ ok: true });
+
+    if (req.method === 'POST') {
+      const { meal, date } = req.body;
+      if (!meal || !date) {
+        return res.status(400).json({ error: 'Missing meal or date' });
+      }
+      const existingData = await redis.get(KEY);
+      const history = existingData ? JSON.parse(existingData) : [];
+      if (!history.find(e => e.meal === meal && e.date === date)) {
+        history.push({ meal, date });
+        await redis.set(KEY, JSON.stringify(history));
+      }
+      return res.status(200).json({ ok: true });
+    }
+
+    res.setHeader('Allow', ['GET','POST']);
+    res.status(405).end();
+  } catch (err) {
+    console.error('Handler error:', err);
+    res.status(500).json({ error: 'Internal server error' });
   }
-  res.setHeader('Allow', ['GET','POST']);
-  res.status(405).end();
 }
