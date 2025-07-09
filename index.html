@@ -174,7 +174,7 @@
     </table>
   </div>
   <script>
-    const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwq1z4rfhm9-dZQ_NX5FEoOphQ-GxomXkVQrQmj7bmLcFXRf_7AOLfRKLRM4sCIDU8Q/exec';
+    const API_URL = '/api/history';
     const defaultMeals = [
       'Burgers','Carbonara','Chicken Shwarama','Chicken Tikka',
       'Chilli','Fajitas','Fish and chips','Mackerel pasta',
@@ -211,11 +211,11 @@
 
     async function fetchHistory() {
       try {
-        const res = await fetch(SHEETS_URL);
-        if (!res.ok) throw new Error('Sheet GET failed');
+        const res = await fetch(API_URL);
+        if (!res.ok) throw new Error('API GET failed');
         history = await res.json();
       } catch (e) {
-        console.warn('Fallback local', e);
+        console.warn('Falling back to local history', e);
         history = JSON.parse(localStorage.getItem('history')) || [];
       }
     }
@@ -223,19 +223,19 @@
     async function postHistory(meal, date) {
       recordLocalHistory(meal, date);
       try {
-        await fetch(SHEETS_URL, {
+        await fetch(API_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ meal, date })
         });
       } catch (e) {
-        console.warn('Sheet POST failed', e);
+        console.warn('API POST failed', e);
       }
     }
 
     function recordLocalHistory(meal, date) {
       if (!meal) return;
-      if (!history.find(e => e.meal===meal && e.date===date)) {
+      if (!history.find(e => e.meal === meal && e.date === date)) {
         history.push({ meal, date });
         localStorage.setItem('history', JSON.stringify(history));
       }
@@ -278,17 +278,17 @@
     function daysBetween(dateStr) {
       const today = new Date();
       const then = new Date(dateStr);
-      return Math.floor((today - then) / (1000*60*60*24));
+      return Math.floor((today - then) / (1000 * 60 * 60 * 24));
     }
 
     function renderHistoryTable() {
       const tbody = document.getElementById('history-body');
       tbody.innerHTML = '';
       meals.forEach(meal => {
-        const entries = history.filter(e => e.meal===meal);
-        const lastDate = entries.length ? entries[entries.length-1].date : null;
+        const entries = history.filter(e => e.meal === meal);
+        const lastDate = entries.length ? entries[entries.length - 1].date : null;
         const daysSince = lastDate ? daysBetween(lastDate) : '-';
-        const countRecent = entries.filter(e => daysBetween(e.date)<=42).length;
+        const countRecent = entries.filter(e => daysBetween(e.date) <= 42).length;
         const tr = document.createElement('tr');
         tr.innerHTML = `<td>${meal}</td><td>${daysSince}</td><td>${countRecent}</td>`;
         tbody.appendChild(tr);
@@ -323,11 +323,14 @@
 
     async function init() {
       document.getElementById('add-meal-button').addEventListener('click', addNewMeal);
-      meals = JSON.parse(localStorage.getItem('meals')) || defaultMeals.slice(); meals.sort();
+      meals = JSON.parse(localStorage.getItem('meals')) || defaultMeals.slice();
+      meals.sort();
       selections = JSON.parse(localStorage.getItem('selections')) || {};
       await fetchHistory();
       seedHistoryFromSelections();
-      renderHistoryTable(); renderSuggestions(); populateDropdowns();
+      renderHistoryTable();
+      renderSuggestions();
+      populateDropdowns();
       document.querySelectorAll('.day-card select').forEach(select => {
         select.addEventListener('change', async () => {
           const card = select.closest('.day-card');
