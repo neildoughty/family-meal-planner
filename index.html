@@ -27,19 +27,19 @@
       gap: 8px;
     }
     .meal-admin input {
-      padding: 8px;
+      padding: 6px;
       border: 1px solid #ccc;
-      border-radius: 8px;
+      border-radius: 6px;
       flex: 1;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
     }
     .meal-admin button {
-      padding: 8px 14px;
+      padding: 6px 12px;
       border: none;
-      border-radius: 8px;
+      border-radius: 6px;
       background: #007aff;
       color: white;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       cursor: pointer;
       transition: background 0.2s ease;
     }
@@ -50,44 +50,50 @@
     @media (max-width: 768px) { .layout { grid-template-columns: 1fr; } }
 
     /* Days grid */
-    .days { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
-    @media (min-width: 769px) { .days { grid-template-columns: repeat(5, minmax(140px, 1fr)); } }
-    .day-card {
-      background: #ffffff;
-      border-radius: 12px;
-      padding: 8px;
-      display: flex;
-      flex-direction: column;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    .days { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px; }
+    @media (min-width: 769px) { .days { grid-template-columns: repeat(5, minmax(120px, 1fr)); } }
+
+    /* Weekday cards */
+    .days .day-card:nth-child(-n+5) {
+      background-color: #f7f7f7;
     }
-    .day-card:hover {
-      transform: translateY(-2px) scale(1.01);
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
-    }
-    /* Weekend styling - stronger highlight */
+
+    /* Weekend cards */
     .days .day-card:nth-child(6),
     .days .day-card:nth-child(7) {
       background-color: #e8f4ff;
     }
+
+    .day-card {
+      border-radius: 10px;
+      padding: 6px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .day-card:hover {
+      transform: translateY(-1px) scale(1.005);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    }
     .day-card h2 {
-      font-size: 1rem;
+      font-size: 0.95rem;
       font-weight: 500;
-      margin-bottom: 4px;
+      margin-bottom: 2px;
       color: #111;
     }
     .selected-meal {
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       font-weight: 600;
-      margin-bottom: 4px;
+      margin-bottom: 2px;
       color: #555;
       min-height: 1em;
     }
     .day-card select {
       width: 100%;
-      font-size: 0.9rem;
-      padding: 4px;
-      border-radius: 6px;
+      font-size: 0.85rem;
+      padding: 2px 4px;
+      border-radius: 4px;
       border: 1px solid #ccc;
     }
 
