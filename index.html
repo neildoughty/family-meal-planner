@@ -4,6 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Family Meal Planner</title>
+<!-- Tailwind CSS via CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+</head>  
+  
   <style>
     /* Base resets */
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -147,206 +151,65 @@
   </style>
 </head>
 <body>
-  <h1>Family Meal Planner</h1>
-  <div class="meal-admin">
-    <input type="text" id="new-meal-input" placeholder="Add new meal (e.g. 'Spaghetti Bolognese')" />
-    <button id="add-meal-button">Add Meal</button>
-  </div>
-  <div class="layout">
-    <div class="days">
-      <div class="day-card"><h2>Monday</h2><div class="selected-meal"></div><div class="nutrition-summary"></div><select></select></div>
-      <div class="day-card"><h2>Tuesday</h2><div class="selected-meal"></div><div class="nutrition-summary"></div><select></select></div>
-      <div class="day-card"><h2>Wednesday</h2><div class="selected-meal"></div><div class="nutrition-summary"></div><select></select></div>
-      <div class="day-card"><h2>Thursday</h2><div class="selected-meal"></div><div class="nutrition-summary"></div><select></select></div>
-      <div class="day-card"><h2>Friday</h2><div class="selected-meal"></div><div class="nutrition-summary"></div><select></select></div>
-      <div class="day-card"><h2>Saturday</h2><div class="selected-meal"></div><div class="nutrition-summary"></div><select></select></div>
-      <div class="day-card"><h2>Sunday</h2><div class="selected-meal"></div><div class="nutrition-summary"></div><select></select></div>
-      <div class="suggestions-card">
-        <h2>Suggestions</h2>
-        <ul id="suggestions-list"></ul>
+<body class="bg-neutral-100 text-neutral-800 leading-relaxed">
+  <div class="max-w-7xl mx-auto p-8">
+    <!-- Header -->
+    <header class="mb-8">
+      <h1 class="text-4xl font-semibold mb-6">Family Meal Planner</h1>
+      <form id="add-meal-form" class="flex flex-col sm:flex-row items-center gap-4">
+        <input
+          id="new-meal-input"
+          type="text"
+          placeholder="Add new meal (e.g. 'Spaghetti Bolognese')"
+          class="flex-grow p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-neutral-800 text-base"
+        />
+        <button
+          type="submit"
+          class="p-4 bg-neutral-800 text-white rounded-lg hover:bg-neutral-700 w-full sm:w-auto"
+        >
+          Add Meal
+        </button>
+      </form>
+    </header>
+
+    <!-- Planner Grid + Suggestions -->
+    <section class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-6">
+      <template id="day-card-template">
+        <div class="bg-white rounded-xl shadow p-6 h-56 flex flex-col">
+          <h2 class="text-xl font-semibold mb-2">DAY_NAME</h2>
+          <p class="text-sm text-neutral-600 mb-4">KCAL · PROTEIN</p>
+          <select class="mt-auto p-3 border border-gray-300 rounded-lg focus:outline-none">
+            <!-- JS will fill options -->
+          </select>
+        </div>
+      </template>
+      <div class="bg-neutral-50 rounded-xl shadow p-6 h-56 overflow-y-auto">
+        <h2 class="text-xl font-semibold mb-4">Suggestions</h2>
+        <ul id="suggestions-list" class="space-y-2">
+          <!-- JS will inject items here -->
+        </ul>
       </div>
-    </div>
-    <table class="history-table">
-      <thead>
-        <tr><th>Meal</th><th>Days Since Last Eaten</th><th>Times Eaten (6w)</th></tr>
-      </thead>
-      <tbody id="history-body"></tbody>
-    </table>
+    </section>
+
+    <!-- Meal Table -->
+    <section class="overflow-x-auto mt-12">
+      <div class="min-w-full bg-white rounded-xl shadow p-6">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr>
+              <th class="pb-4 font-semibold">Meal</th>
+              <th class="pb-4 font-semibold">Days Since Last Eaten</th>
+              <th class="pb-4 font-semibold">Times Eaten (6w)</th>
+            </tr>
+          </thead>
+          <tbody id="meals-table-body" class="divide-y divide-gray-200">
+            <!-- JS will inject rows here -->
+          </tbody>
+        </table>
+      </div>
+    </section>
   </div>
-  <script>
-    const API_URL = window.location.origin + '/api/history';
-    const defaultMeals = [
-      'Burgers','Carbonara','Chicken Shwarama','Chicken Tikka',
-      'Chilli','Fajitas','Fish and chips','Mackerel pasta',
-      'Meatball pasta','Pasta Amatriciana','Pizzas','Pork and potatoes',
-      'Sausage and chips','Thai Curry','Toad in the hole','Tuna and Sweetcorn pasta'
-    ];
-    const suggestions = [
-      { name: 'Easy Macaroni Cheese', url: 'https://www.bbcgoodfood.com/recipes/macaroni-cheese-4-easy-steps' },
-      { name: 'Creamy Chicken Alfredo', url: 'https://www.allrecipes.com/recipe/276725/creamy-chicken-alfredo/' },
-      { name: 'Homemade Beef Burgers', url: 'https://www.bbcgoodfood.com/recipes/homemade-beef-burgers' },
-      { name: 'Easy Ham and Cheese Quiche', url: 'https://www.allrecipes.com/recipe/241251/creamy-ham-and-cheese-quiche/' },
-      { name: 'Homemade Pepperoni Pizza', url: 'https://www.allrecipes.com/recipe/240376/homemade-pepperoni-pizza/' }
-    ];
-    const nutritionData = {
-      'Burgers': { cal: 550, protein: 30 },
-      'Carbonara': { cal: 620, protein: 25 },
-      'Chicken Shwarama': { cal: 480, protein: 28 },
-      'Chicken Tikka': { cal: 450, protein: 27 },
-      'Chilli': { cal: 530, protein: 22 },
-      'Fajitas': { cal: 500, protein: 26 },
-      'Fish and chips': { cal: 700, protein: 20 },
-      'Mackerel pasta': { cal: 580, protein: 24 },
-      'Meatball pasta': { cal: 610, protein: 26 },
-      'Pasta Amatriciana': { cal: 600, protein: 20 },
-      'Pizzas': { cal: 680, protein: 25 },
-      'Pork and potatoes': { cal: 650, protein: 28 },
-      'Sausage and chips': { cal: 720, protein: 25 },
-      'Thai Curry': { cal: 590, protein: 22 },
-      'Toad in the hole': { cal: 630, protein: 24 },
-      'Tuna and Sweetcorn pasta': { cal: 540, protein: 23 }
-    };
-    const dayIndex = { Sunday: 0, Monday: 1, Tuesday: 2, Wednesday: 3, Thursday: 4, Friday: 5, Saturday: 6 };
-    let meals, selections, history;
+</body>
 
-    async function fetchHistory() {
-      try {
-        const res = await fetch(API_URL);
-        if (!res.ok) throw new Error('API GET failed');
-        history = await res.json();
-      } catch (e) {
-        console.warn('Falling back to local history', e);
-        history = JSON.parse(localStorage.getItem('history')) || [];
-      }
-    }
-
-    async function postHistory(meal, date) {
-      recordLocalHistory(meal, date);
-      try {
-        await fetch(API_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ meal, date })
-        });
-      } catch (e) {
-        console.warn('API POST failed', e);
-      }
-    }
-
-    function recordLocalHistory(meal, date) {
-      if (!meal) return;
-      if (!history.find(e => e.meal === meal && e.date === date)) {
-        history.push({ meal, date });
-        localStorage.setItem('history', JSON.stringify(history));
-      }
-    }
-
-    function populateDropdowns() {
-      document.querySelectorAll('.day-card').forEach(card => {
-        const day = card.querySelector('h2').textContent;
-        const select = card.querySelector('select');
-        select.innerHTML = '<option value="">— pick a meal —</option>';
-        meals.forEach(meal => {
-          const opt = document.createElement('option');
-          opt.value = meal;
-          opt.textContent = meal;
-          select.appendChild(opt);
-        });
-        if (selections[day]) select.value = selections[day];
-        updateCard(card, select);
-      });
-    }
-
-    function updateCard(card, select) {
-      card.querySelector('.selected-meal').textContent = select.value || '';
-      const nutr = card.querySelector('.nutrition-summary');
-      const data = nutritionData[select.value];
-      nutr.textContent = data ? `${data.cal} kcal • ${data.protein}g protein` : '';
-    }
-
-    function seedHistoryFromSelections() {
-      const today = new Date();
-      Object.entries(selections).forEach(([day, meal]) => {
-        if (!meal) return;
-        const idx = dayIndex[day];
-        const dateObj = new Date(today);
-        dateObj.setDate(today.getDate() + (idx - today.getDay()));
-        postHistory(meal, dateObj.toISOString().split('T')[0]);
-      });
-    }
-
-    function daysBetween(dateStr) {
-      const today = new Date();
-      const then = new Date(dateStr);
-      return Math.floor((today - then) / (1000 * 60 * 60 * 24));
-    }
-
-    function renderHistoryTable() {
-      const tbody = document.getElementById('history-body');
-      tbody.innerHTML = '';
-      meals.forEach(meal => {
-        const entries = history.filter(e => e.meal === meal);
-        const lastDate = entries.length ? entries[entries.length - 1].date : null;
-        const daysSince = lastDate ? daysBetween(lastDate) : '-';
-        const countRecent = entries.filter(e => daysBetween(e.date) <= 42).length;
-        const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${meal}</td><td>${daysSince}</td><td>${countRecent}</td>`;
-        tbody.appendChild(tr);
-      });
-    }
-
-    function renderSuggestions() {
-      const ul = document.getElementById('suggestions-list');
-      suggestions.forEach(item => {
-        const li = document.createElement('li');
-        const a = document.createElement('a');
-        a.href = item.url;
-        a.target = '_blank';
-        a.textContent = item.name;
-        li.appendChild(a);
-        ul.appendChild(li);
-      });
-    }
-
-    function addNewMeal() {
-      const input = document.getElementById('new-meal-input');
-      const meal = input.value.trim();
-      if (meal && !meals.includes(meal)) {
-        meals.push(meal);
-        meals.sort();
-        localStorage.setItem('meals', JSON.stringify(meals));
-        renderHistoryTable();
-        populateDropdowns();
-        input.value = '';
-      }
-    }
-
-    async function init() {
-      document.getElementById('add-meal-button').addEventListener('click', addNewMeal);
-      meals = JSON.parse(localStorage.getItem('meals')) || defaultMeals.slice();
-      meals.sort();
-      selections = JSON.parse(localStorage.getItem('selections')) || {};
-      await fetchHistory();
-      seedHistoryFromSelections();
-      renderHistoryTable();
-      renderSuggestions();
-      populateDropdowns();
-      document.querySelectorAll('.day-card select').forEach(select => {
-        select.addEventListener('change', async () => {
-          const card = select.closest('.day-card');
-          const day = card.querySelector('h2').textContent;
-          const meal = select.value;
-          const date = new Date().toISOString().split('T')[0];
-          selections[day] = meal;
-          localStorage.setItem('selections', JSON.stringify(selections));
-          updateCard(card, select);
-          await postHistory(meal, date);
-          renderHistoryTable();
-        });
-      });
-    }
-
-    document.addEventListener('DOMContentLoaded', init);
-  </script>
 </body>
 </html>
